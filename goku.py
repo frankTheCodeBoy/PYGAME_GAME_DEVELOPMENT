@@ -5,6 +5,7 @@ class Goku:
         """initialize class and its attributes"""
         self.screen = first_play.screen
         self.screen_rect = first_play.screen.get_rect()
+        self.goku_speed = 1.5
 
         # load the image and get rect attribute
         self.image = pygame.image.load("game_pics/black_panther.bmp")
@@ -17,14 +18,24 @@ class Goku:
 
         # give image ability to move by first setting flag
         self.moving_right = False
-        self.moving_left = False 
+        self.moving_left = False
+        self.moving_up = False
+        self.moving_down = False
 
+        # define speed holder
+        self.x = float(self.rect.x)
+    
+         
     def blitme(self):
         """draw character at said position"""
         self.screen.blit(self.scaled_image,self.rect)
 
     def update_me(self):
-        if self.moving_right==True:
-            self.rect.x += 1
-        if self.moving_left==True:
-            self.rect.x -= 1
+        if self.moving_right==True and self.rect.right < self.screen_rect.right:
+            self.x += self.goku_speed
+        if self.moving_left==True and self.rect.left > self.screen_rect.left:
+            self.x -= self.goku_speed
+       
+        # Finally update rect object with x
+        self.rect.x = self.x
+        

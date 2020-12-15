@@ -29,12 +29,14 @@ class GameCharacter:
                     self.goku.moving_right = True
                 elif event.key == pygame.K_LEFT:
                     self.goku.moving_left = True
+                elif event.key == pygame.K_q:
+                    sys.exit()
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
                     self.goku.moving_right = False
                 elif event.key == pygame.K_LEFT:
                     self.goku.moving_left = False
-
+               
     def _update_the_screen(self):
         """fill screen color, blit new image at point"""
         self.screen.fill(self.bg_color)
