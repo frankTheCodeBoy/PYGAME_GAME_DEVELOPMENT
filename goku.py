@@ -22,10 +22,10 @@ class Goku:
         self.moving_up = False
         self.moving_down = False
 
-        # define speed holder
+        # define speed holder for horizontal and vertical movements
         self.x = float(self.rect.x)
-    
-         
+        self.y = float(self.rect.y)
+        
     def blitme(self):
         """draw character at said position"""
         self.screen.blit(self.scaled_image,self.rect)
@@ -35,7 +35,12 @@ class Goku:
             self.x += self.goku_speed
         if self.moving_left==True and self.rect.left > self.screen_rect.left:
             self.x -= self.goku_speed
+        if self.moving_up==True and self.rect.top > self.screen_rect.top:
+            self.y -= self.goku_speed
+        if self.moving_down==True and self.rect.bottom < self.screen_rect.bottom:
+            self.y += self.goku_speed
        
-        # Finally update rect object with x
+        # Finally update rect object with x and y
         self.rect.x = self.x
+        self.rect.y = self.y
         

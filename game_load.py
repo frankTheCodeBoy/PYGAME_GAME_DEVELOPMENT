@@ -7,7 +7,7 @@ class GameCharacter:
         """initialize game and define attributes"""
         pygame.init()
 
-        self.screen = pygame.display.set_mode((1000,600))
+        self.screen = pygame.display.set_mode((1150,700))
         self.bg_color = (100,100,100)
         pygame.display.set_caption("Game Character- Version One: created by @frank olum.")
         self.goku = Goku(self)
@@ -29,6 +29,10 @@ class GameCharacter:
                     self.goku.moving_right = True
                 elif event.key == pygame.K_LEFT:
                     self.goku.moving_left = True
+                elif event.key == pygame.K_UP:
+                    self.goku.moving_up = True
+                elif event.key == pygame.K_DOWN:
+                    self.goku.moving_down = True
                 elif event.key == pygame.K_q:
                     sys.exit()
             elif event.type == pygame.KEYUP:
@@ -36,6 +40,10 @@ class GameCharacter:
                     self.goku.moving_right = False
                 elif event.key == pygame.K_LEFT:
                     self.goku.moving_left = False
+                elif event.key == pygame.K_UP:
+                    self.goku.moving_up = False
+                elif event.key == pygame.K_DOWN:
+                    self.goku.moving_down = False
                
     def _update_the_screen(self):
         """fill screen color, blit new image at point"""
