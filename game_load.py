@@ -57,7 +57,11 @@ class GameCharacter:
     def _update_bullets(self):
         """Update positions of bullets and rid old bullets"""
         self.bullets.update()
-               
+        for bullet in self.bullets.copy():
+            if bullet.rect.x > self.screen_height:
+                self.bullets.remove(bullet)
+        print(len(self.bullets))
+
     def _update_the_screen(self):
         """fill screen color, blit new image at point"""
         self.screen.fill(self.bg_color)
