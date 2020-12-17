@@ -12,6 +12,7 @@ class Bullet(Sprite):
         self.bullet_width = 3
         self.bullet_color = (250,0,0)
         self.bullet_speed = 1.0
+        
         # Create bullet at 0,0 then correct position
         self.rect = pygame.Rect(0,0,self.bullet_width,self.bullet_height)
         self.rect.center = first_play.goku.rect.center

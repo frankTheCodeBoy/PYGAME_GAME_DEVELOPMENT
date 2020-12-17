@@ -16,6 +16,8 @@ class GameCharacter:
         pygame.display.set_caption("Game Character- Version One: created by @frank olum.")
         self.goku = Goku(self)
         self.bullets = pygame.sprite.Group()
+        # bullets allowed setting
+        self.bullets_allowed = 3
 
     def run_the_game(self):
         """a while loop for the game"""
@@ -40,8 +42,9 @@ class GameCharacter:
                 elif event.key == pygame.K_DOWN:
                     self.goku.moving_down = True
                 elif event.key == pygame.K_SPACE:
-                    new_bullet = Bullet(self)
-                    self.bullets.add(new_bullet)
+                    if len(self.bullets) < self.bullets_allowed:
+                        new_bullet = Bullet(self)
+                        self.bullets.add(new_bullet)
                 elif event.key == pygame.K_q:
                     sys.exit()
             elif event.type == pygame.KEYUP:
@@ -60,7 +63,6 @@ class GameCharacter:
         for bullet in self.bullets.copy():
             if bullet.rect.x > self.screen_height:
                 self.bullets.remove(bullet)
-        print(len(self.bullets))
 
     def _update_the_screen(self):
         """fill screen color, blit new image at point"""
