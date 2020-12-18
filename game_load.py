@@ -9,9 +9,9 @@ class GameCharacter:
         """initialize game and define attributes"""
         pygame.init()
         
-        self.screen_width = 700
-        self.screen_height = 1150
-        self.screen = pygame.display.set_mode((self.screen_height,self.screen_width))
+        self.screen_width = 720
+        self.screen_length = 1150
+        self.screen = pygame.display.set_mode((self.screen_length,self.screen_width))
         self.bg_color = (100,100,100)
         pygame.display.set_caption("Game Character- Version One: created by @frank olum.")
         self.goku = Goku(self)
@@ -61,7 +61,7 @@ class GameCharacter:
         """Update positions of bullets and rid old bullets"""
         self.bullets.update()
         for bullet in self.bullets.copy():
-            if bullet.rect.x > self.screen_height:
+            if bullet.rect.x > self.screen_length:
                 self.bullets.remove(bullet)
 
     def _update_the_screen(self):
