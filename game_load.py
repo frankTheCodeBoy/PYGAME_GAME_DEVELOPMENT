@@ -2,6 +2,7 @@ import sys
 import pygame
 from goku import Goku
 from game_bullets import Bullet
+from aliens import Alien
 
 class GameCharacter:
     """a class to manage game resources and activities"""
@@ -19,6 +20,10 @@ class GameCharacter:
         self.bullets = pygame.sprite.Group()
         # bullets allowed setting
         self.bullets_allowed = 3
+
+        self.aliens = pygame.sprite.Group()
+        self._new_fleet()
+
 
     def run_the_game(self):
         """a while loop for the game"""
@@ -71,12 +76,18 @@ class GameCharacter:
             if bullet.rect.x < 0:
                 self.bullets.remove(bullet)
 
+    def _new_fleet(self):
+        """build new alien fleet"""
+        alien = Alien(self)
+        self.aliens.add(alien)
+
     def _update_the_screen(self):
         """fill screen color, blit new image at point"""
         self.screen.fill(self.bg_color)
         self.goku.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+        self.aliens.draw(self.screen)
         pygame.display.flip()
 
 if __name__ == "__main__":
