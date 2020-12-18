@@ -33,29 +33,35 @@ class GameCharacter:
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RIGHT:
-                    self.goku.moving_right = True
-                elif event.key == pygame.K_LEFT:
-                    self.goku.moving_left = True
-                elif event.key == pygame.K_UP:
-                    self.goku.moving_up = True
-                elif event.key == pygame.K_DOWN:
-                    self.goku.moving_down = True
-                elif event.key == pygame.K_SPACE:
-                    if len(self.bullets) < self.bullets_allowed:
-                        new_bullet = Bullet(self)
-                        self.bullets.add(new_bullet)
-                elif event.key == pygame.K_q:
-                    sys.exit()
+                self._check_keypresses(event)
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_RIGHT:
-                    self.goku.moving_right = False
-                elif event.key == pygame.K_LEFT:
-                    self.goku.moving_left = False
-                elif event.key  == pygame.K_UP:
-                    self.goku.moving_up = False
-                elif event.key == pygame.K_DOWN:
-                    self.goku.moving_down = False
+                self._check_keyrelease(event)
+
+    def _check_keypresses(self,event):
+        if event.key == pygame.K_RIGHT:
+            self.goku.moving_right = True
+        elif event.key == pygame.K_LEFT:
+            self.goku.moving_left = True
+        elif event.key == pygame.K_UP:
+            self.goku.moving_up = True
+        elif event.key == pygame.K_DOWN:
+            self.goku.moving_down = True
+        elif event.key == pygame.K_SPACE:
+            if len(self.bullets) < self.bullets_allowed:
+                new_bullet = Bullet(self)
+                self.bullets.add(new_bullet)
+        elif event.key == pygame.K_q:
+            sys.exit()
+            
+    def _check_keyrelease(self,event):
+        if event.key == pygame.K_RIGHT:
+            self.goku.moving_right = False
+        elif event.key == pygame.K_LEFT:
+            self.goku.moving_left = False
+        elif event.key  == pygame.K_UP:
+            self.goku.moving_up = False
+        elif event.key == pygame.K_DOWN:
+            self.goku.moving_down = False
 
     def _update_bullets(self):
         """Update positions of bullets and rid old bullets"""
