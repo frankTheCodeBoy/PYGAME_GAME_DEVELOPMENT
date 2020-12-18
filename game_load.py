@@ -68,7 +68,7 @@ class GameCharacter:
         """Update positions of bullets and rid old bullets"""
         self.bullets.update()
         for bullet in self.bullets.copy():
-            if bullet.rect.x > self.screen_length:
+            if bullet.rect.x < 0:
                 self.bullets.remove(bullet)
 
     def _update_the_screen(self):
