@@ -10,9 +10,9 @@ class GameCharacter:
         """initialize game and define attributes"""
         pygame.init()
         # Screen settings and display
-        self.screen_width = 720
-        self.screen_length = 1150
-        self.screen = pygame.display.set_mode((self.screen_length,self.screen_width))
+        self.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+        self.screen_width = self.screen.get_rect().width 
+        self.screen_height = self.screen.get_rect().height
         self.bg_color = (100,0,0)
         pygame.display.set_caption("Game Character- Version One: created by @frank olum.")
         # reference to goku character

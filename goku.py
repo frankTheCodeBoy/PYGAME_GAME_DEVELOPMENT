@@ -9,7 +9,7 @@ class Goku:
 
         # load the image and get rect attribute
         self.image = pygame.image.load("game_pics/black_panther.png")
-        self.scaled_image = pygame.transform.smoothscale(self.image,(150,150))
+        self.scaled_image = pygame.transform.smoothscale(self.image,(170,170))
         self.scaled_image.convert()
         self.rect = self.scaled_image.get_rect()
 
