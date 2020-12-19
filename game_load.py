@@ -77,9 +77,21 @@ class GameCharacter:
                 self.bullets.remove(bullet)
 
     def _new_fleet(self):
-        """build new alien fleet"""
+        """Create alien fleet"""
+        # Create an alien and find the number of aliens in a row
+        # Spacing between each alien is equal to one alien width
         alien = Alien(self)
-        self.aliens.add(alien)
+        alien_width = alien.rect.width
+        available_space_x = self.screen_width - (2 * alien_width)
+        number_aliens_x = available_space_x // (2 * alien_width)
+        # Create first row of fleet
+        for alien_number in range(number_aliens_x):
+            # Create an alien and place it in row
+            alien = Alien(self)
+            alien.x = alien_width + 2 * alien_width * alien_number
+            alien.rect.x = alien.x
+            self.aliens.add(alien)
+
 
     def _update_the_screen(self):
         """fill screen color, blit new image at point"""
