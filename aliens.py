@@ -18,6 +18,6 @@ class Alien(Sprite):
         self.rect.y = self.rect.height
 
         # Store the aliens exact horizontal position
-        self.x = float(self.rect.x)
+        self.y = float(self.rect.y)
 
 
