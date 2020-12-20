@@ -86,11 +86,15 @@ class GameCharacter:
         number_aliens_y = (available_space_y // (2 * alien_height)) + 1
         # Create first row of fleet
         for alien_number in range(number_aliens_y):
-            # Create an alien and place it in row
-            alien = Alien(self)
-            alien.y = alien_height + (2 * alien_height * alien_number)
-            alien.rect.y = alien.y
-            self.aliens.add(alien)
+            self._create_alien(alien_number)
+
+    def _create_alien(self,alien_number):
+        # Create an alien and place it in row
+        alien = Alien(self)
+        alien_height = alien.rect.height
+        alien.y = alien_height + (2 * alien_height * alien_number)
+        alien.rect.y = alien.y
+        self.aliens.add(alien)
 
 
     def _update_the_screen(self):
