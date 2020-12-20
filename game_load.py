@@ -81,18 +81,25 @@ class GameCharacter:
         # Create an alien and find the number of aliens in a row
         # Spacing between each alien is equal to one alien width
         alien = Alien(self)
-        alien_height = alien.rect.height
+        alien_height, alien_width = alien.rect.size
         available_space_y = self.screen_height - (2 * alien_height)
         number_aliens_y = (available_space_y // (2 * alien_height)) + 1
-        # Create first row of fleet
-        for alien_number in range(number_aliens_y):
-            self._create_alien(alien_number)
+        # Determine alien columns to fit on screen
+        goku_width = self.goku.rect.width
+        available_space_x = (self.screen_width - (3 * alien_width) - goku_width)
 
-    def _create_alien(self,alien_number):
+        number_columns = (available_space_x // (2 * alien_width)) + 1
+        # Create full fleet of aliens
+        for column_number in range(number_columns):
+            for alien_number in range(number_aliens_y):
+                self._create_alien(alien_number,column_number)
+
+    def _create_alien(self,alien_number,column_number):
         # Create an alien and place it in row
         alien = Alien(self)
-        alien_height = alien.rect.height
+        alien_height, alien_width = alien.rect.size
         alien.y = alien_height + (2 * alien_height * alien_number)
+        alien.rect.x = alien.rect.width + 2 * alien.rect.width * column_number
         alien.rect.y = alien.y
         self.aliens.add(alien)
 
