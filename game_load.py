@@ -3,6 +3,7 @@ import pygame
 from goku import Goku
 from game_bullets import Bullet
 from aliens import Alien
+from settings import FleetSettings
 
 class GameCharacter:
     """a class to manage game resources and activities"""
@@ -20,7 +21,9 @@ class GameCharacter:
         self.bullets = pygame.sprite.Group()
         # bullets allowed setting
         self.bullets_allowed = 3
-
+        # Fleet settings
+        self.settings = FleetSettings()
+        
         self.aliens = pygame.sprite.Group()
         self._new_fleet()
 
@@ -104,8 +107,24 @@ class GameCharacter:
         alien.rect.y = alien.y
         self.aliens.add(alien)
 
+    def _check_fleet_edges(self):
+        """Respond appropriately if any aliens have reached the edge."""
+        for alien in self.aliens.sprites():
+            if alien.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """Move fleet across screen and change fleet direction"""
+        for alien in self.aliens.sprites():
+            alien.rect.x += self.settings.fleet_cruise_speed
+        self.settings.fleet_direction *= -1
+
+
     def _update_aliens(self):
-        """Update positions of all aliens in the fleet"""
+        """Check if fleet is at edge 
+        update positions of all aliens in the fleet"""
+        self._check_fleet_edges()
         self.aliens.update()
 
     def _update_the_screen(self):
