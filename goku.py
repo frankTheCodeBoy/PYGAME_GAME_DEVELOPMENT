@@ -14,7 +14,7 @@ class Goku:
         self.rect = self.scaled_image.get_rect()
 
         # positioning
-        self.rect.midright = self.screen_rect.midright
+        self.rect.bottomright = self.screen_rect.bottomright
 
         # give image ability to move by first setting flag
         self.moving_right = False

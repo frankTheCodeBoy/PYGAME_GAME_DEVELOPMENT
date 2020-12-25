@@ -13,7 +13,7 @@ class GameCharacter:
         self.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
         self.screen_width = self.screen.get_rect().width 
         self.screen_height = self.screen.get_rect().height
-        self.bg_color = (100,0,0)
+        self.bg_color = (176,48,96)
         pygame.display.set_caption("Game Character- Version One: created by @frank olum.")
         # reference to goku character
         self.goku = Goku(self)
