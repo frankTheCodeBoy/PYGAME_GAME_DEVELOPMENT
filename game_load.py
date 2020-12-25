@@ -31,6 +31,7 @@ class GameCharacter:
             self._check_the_event()
             self.goku.update_me()
             self._update_bullets()
+            self._update_aliens()
             self._update_the_screen()
 
     def _check_the_event(self):
@@ -103,6 +104,9 @@ class GameCharacter:
         alien.rect.y = alien.y
         self.aliens.add(alien)
 
+    def _update_aliens(self):
+        """Update positions of all aliens in the fleet"""
+        self.aliens.update()
 
     def _update_the_screen(self):
         """fill screen color, blit new image at point"""
