@@ -5,7 +5,7 @@ class Goku:
         """initialize class and its attributes"""
         self.screen = first_play.screen
         self.screen_rect = first_play.screen.get_rect()
-        self.goku_speed = 1.5
+        self.goku_speed = 1.8
 
         # load the image and get rect attribute
         self.image = pygame.image.load("game_pics/black_panther.png")
