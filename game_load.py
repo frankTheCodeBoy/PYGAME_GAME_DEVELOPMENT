@@ -83,6 +83,10 @@ class GameCharacter:
         # If so, get rid of the bullet amd the alien.
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True)
+        if not self.aliens:
+            # Destroy existing bullets and create new fleet
+            self.bullets.empty()
+            self._new_fleet()
 
     def _new_fleet(self):
         """Create alien fleet"""
