@@ -2,11 +2,12 @@ import sys
 from time import sleep
 
 import pygame
-from goku import Goku
+
+from settings import Settings
 from game_stats import GameStats
+from goku import Goku
 from game_bullets import Bullet
 from aliens import Alien
-from settings import FleetSettings
 
 class GameCharacter:
     """a class to manage game resources and activities"""
@@ -14,19 +15,16 @@ class GameCharacter:
         """initialize game and define attributes"""
         pygame.init()
         # Screen settings and display
+        self.settings = Settings()
         self.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
-        self.screen_width = self.screen.get_rect().width 
-        self.screen_height = self.screen.get_rect().height
-        self.bg_color = (139,0,0)
+        self.settings.screen_width = self.screen.get_rect().width 
+        self.settings.screen_height = self.screen.get_rect().height
+        
         pygame.display.set_caption("Game Character- Version One: created by @frank olum.")
         # reference to goku character
         self.goku = Goku(self)
-        self.stats = GameStats()
+        self.stats = GameStats(self)
         self.bullets = pygame.sprite.Group()
-        # bullets allowed setting
-        self.bullets_allowed = 4
-        # Fleet settings
-        self.settings = FleetSettings()
 
         self.aliens = pygame.sprite.Group()
         self._new_fleet()
@@ -61,7 +59,7 @@ class GameCharacter:
         elif event.key == pygame.K_DOWN:
             self.goku.moving_down = True
         elif event.key == pygame.K_SPACE:
-            if len(self.bullets) < self.bullets_allowed:
+            if len(self.bullets) < self.settings.bullets_allowed:
                 new_bullet = Bullet(self)
                 self.bullets.add(new_bullet)
         elif event.key == pygame.K_q:
@@ -98,11 +96,12 @@ class GameCharacter:
         # Spacing between each alien is equal to one alien width
         alien = Alien(self)
         alien_height, alien_width = alien.rect.size
-        available_space_y = self.screen_height - (2 * alien_height)
+        available_space_y = self.settings.screen_height - (2 * alien_height)
         number_aliens_y = (available_space_y // (2 * alien_height)) + 1
         # Determine alien columns to fit on screen
         goku_width = self.goku.rect.width
-        available_space_x = (self.screen_width - (3 * alien_width) - goku_width)
+        available_space_x = (self.settings.screen_width
+         - (3 * alien_width) - goku_width)
 
         number_columns = (available_space_x // (2 * alien_width)) + 1
         # Create full fleet of aliens
@@ -144,7 +143,7 @@ class GameCharacter:
 
     def _goku_hit(self):
         """Respond to goku being hit"""
-        self.stats.keep_stats()
+        self.stats.goku_left -= 1
         self.aliens.empty()
         self.bullets.empty()
         # create new fleet and restore goku
@@ -155,7 +154,7 @@ class GameCharacter:
 
     def _update_the_screen(self):
         """fill screen color, blit new image at point"""
-        self.screen.fill(self.bg_color)
+        self.screen.fill(self.settings.bg_color)
         self.goku.blitme()
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()

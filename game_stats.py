@@ -1,15 +1,11 @@
 class GameStats:
-    """Track statistics for Game Character"""
+    """Track statistics for Alien Invasion."""
 
-    def __init__(self,goku_limit=3):
-        """define limit, and areset method"""
-        self.goku_limit = goku_limit
-        
-    def keep_stats(self):
-        """Initialize statistics that can change during the game"""
-        self.goku_limit -= 1
-        return self.goku_limit
+    def __init__(self,first_play):
+        """Initialize statistics."""
+        self.settings = first_play.settings
+        self.reset_stats()
 
     def reset_stats(self):
-        """reset goku stats"""
-        self.goku_limit = 3
+        """Initialize statistics that can change during the game"""
+        self.goku_left = self.settings.goku_lives

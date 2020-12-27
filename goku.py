@@ -5,7 +5,7 @@ class Goku:
         """initialize class and its attributes"""
         self.screen = first_play.screen
         self.screen_rect = first_play.screen.get_rect()
-        self.goku_speed = 2.0
+        self.settings = first_play.settings
 
         # load the image and get rect attribute
         self.image = pygame.image.load("game_pics/black_panther.png")
@@ -32,13 +32,13 @@ class Goku:
 
     def update_me(self):
         if self.moving_right==True and self.rect.right < self.screen_rect.right:
-            self.x += self.goku_speed
+            self.x += self.settings.goku_speed
         if self.moving_left==True and self.rect.left > self.screen_rect.left:
-            self.x -= self.goku_speed
+            self.x -= self.settings.goku_speed
         if self.moving_up==True and self.rect.top > self.screen_rect.top:
-            self.y -= self.goku_speed
+            self.y -= self.settings.goku_speed
         if self.moving_down==True and self.rect.bottom < self.screen_rect.bottom:
-            self.y += self.goku_speed
+            self.y += self.settings.goku_speed
        
         # Finally update rect object with x and y
         self.rect.x = self.x
