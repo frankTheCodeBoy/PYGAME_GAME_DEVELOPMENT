@@ -44,3 +44,16 @@ class Goku:
         self.rect.x = self.x
         self.rect.y = self.y
         
+    def restore_goku(self):
+        """Restore goku position"""
+        self.rect.bottomright = self.screen_rect.bottomright
+        self.x = float(self.rect.x)
+        self.y = float(self.rect.y)
+
+
+
+
+
+
+
+

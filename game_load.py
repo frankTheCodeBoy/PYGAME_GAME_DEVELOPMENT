@@ -1,6 +1,9 @@
 import sys
+from time import sleep
+
 import pygame
 from goku import Goku
+from game_stats import GameStats
 from game_bullets import Bullet
 from aliens import Alien
 from settings import FleetSettings
@@ -18,12 +21,13 @@ class GameCharacter:
         pygame.display.set_caption("Game Character- Version One: created by @frank olum.")
         # reference to goku character
         self.goku = Goku(self)
+        self.stats = GameStats()
         self.bullets = pygame.sprite.Group()
         # bullets allowed setting
         self.bullets_allowed = 4
         # Fleet settings
         self.settings = FleetSettings()
-        
+
         self.aliens = pygame.sprite.Group()
         self._new_fleet()
 
@@ -134,6 +138,20 @@ class GameCharacter:
         update positions of all aliens in the fleet"""
         self._check_fleet_edges()
         self.aliens.update()
+        # Look for collisions of alien and goku"""
+        if pygame.sprite.spritecollideany(self.goku,self.aliens):
+            self._goku_hit()
+
+    def _goku_hit(self):
+        """Respond to goku being hit"""
+        self.stats.keep_stats()
+        self.aliens.empty()
+        self.bullets.empty()
+        # create new fleet and restore goku
+        self._new_fleet()
+        self.goku.restore_goku()
+        # Pause
+        sleep(0.5)
 
     def _update_the_screen(self):
         """fill screen color, blit new image at point"""
