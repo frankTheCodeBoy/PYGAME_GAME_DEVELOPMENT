@@ -140,6 +140,8 @@ class GameCharacter:
         # Look for collisions of alien and goku"""
         if pygame.sprite.spritecollideany(self.goku,self.aliens):
             self._goku_hit()
+        # Look for aliens reaching right side of screen.
+        self._check_aliens_right()
 
     def _goku_hit(self):
         """Respond to goku being hit"""
@@ -151,6 +153,14 @@ class GameCharacter:
         self.goku.restore_goku()
         # Pause
         sleep(0.5)
+
+    def _check_aliens_right(self):
+        """Check whether any aliens have reached the right side of the screen"""
+        screen_rect = self.screen.get_rect()
+        for alien in self.aliens.sprites():
+            if alien.rect.right >= screen_rect.right:
+                self._goku_hit()
+                break
 
     def _update_the_screen(self):
         """fill screen color, blit new image at point"""
