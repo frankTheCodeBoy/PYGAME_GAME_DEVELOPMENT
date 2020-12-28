@@ -5,6 +5,7 @@ import pygame
 
 from settings import Settings
 from game_stats import GameStats
+from button import Button
 from goku import Goku
 from game_bullets import Bullet
 from aliens import Alien
@@ -28,15 +29,18 @@ class GameCharacter:
 
         self.aliens = pygame.sprite.Group()
         self._new_fleet()
-
+        # Make a Play button.
+        self.play_button = Button(self, "PLAY")
 
     def run_the_game(self):
         """a while loop for the game"""
         while True:
             self._check_the_event()
-            self.goku.update_me()
-            self._update_bullets()
-            self._update_aliens()
+            
+            if self.stats.game_active:
+                self.goku.update_me()
+                self._update_bullets()
+                self._update_aliens()
             self._update_the_screen()
 
     def _check_the_event(self):
@@ -48,6 +52,25 @@ class GameCharacter:
                 self._check_keypresses(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyrelease(event)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
+
+    def _check_play_button(self, mouse_pos):
+        """Start a new game when the player clicks Play."""
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.stats.game_active:
+            # Reset game statistics.
+            self.stats.reset_stats()
+            self.stats.game_active = True
+            # Get rid of any remaining aliens and bullets.
+            self.aliens.empty()
+            self.bullets.empty()
+            # Create a new fleet and center the game character
+            self._new_fleet()
+            self.goku.restore_goku()
+            # Hide the mouse cursor.
+            pygame.mouse.set_visible(False)
 
     def _check_keypresses(self,event):
         if event.key == pygame.K_RIGHT:
@@ -145,14 +168,18 @@ class GameCharacter:
 
     def _goku_hit(self):
         """Respond to goku being hit"""
-        self.stats.goku_left -= 1
-        self.aliens.empty()
-        self.bullets.empty()
-        # create new fleet and restore goku
-        self._new_fleet()
-        self.goku.restore_goku()
-        # Pause
-        sleep(0.5)
+        if self.stats.goku_left > 0:
+            self.stats.goku_left -= 1
+            self.aliens.empty()
+            self.bullets.empty()
+            # create new fleet and restore goku
+            self._new_fleet()
+            self.goku.restore_goku()
+            # Pause
+            sleep(0.5)
+        else:
+            self.stats.game_active = False
+            pygame.mouse.set_visible(True)
 
     def _check_aliens_right(self):
         """Check whether any aliens have reached the right side of the screen"""
@@ -169,6 +196,10 @@ class GameCharacter:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
+        # Draw play button if game is inactive state.
+        if self.stats.game_active == False:
+            self.play_button.draw_button()
+
         pygame.display.flip()
 
 if __name__ == "__main__":
