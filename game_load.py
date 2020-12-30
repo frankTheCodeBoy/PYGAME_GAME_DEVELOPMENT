@@ -5,6 +5,7 @@ import pygame
 
 from settings import Settings
 from game_stats import GameStats
+from scoreboard import Scoreboard
 from button import Button
 from goku import Goku
 from game_bullets import Bullet
@@ -24,7 +25,11 @@ class GameCharacter:
         pygame.display.set_caption("Game Character- Version One: created by @frank olum.")
         # reference to goku character
         self.goku = Goku(self)
+        # Create an instance to store game statistics,
+        # and create a scoreboard.
         self.stats = GameStats(self)
+        self.sb = Scoreboard(self)
+
         self.bullets = pygame.sprite.Group()
 
         self.aliens = pygame.sprite.Group()
@@ -60,6 +65,8 @@ class GameCharacter:
         """Start a new game when the player clicks Play."""
         button_clicked = self.play_button.rect.collidepoint(mouse_pos)
         if button_clicked and not self.stats.game_active:
+            # Reset the game settings.
+            self.settings.initialize_dynamic_settings()
             # Reset game statistics.
             self.stats.reset_stats()
             self.stats.game_active = True
@@ -104,14 +111,18 @@ class GameCharacter:
         for bullet in self.bullets.copy():
             if bullet.rect.x < 0:
                 self.bullets.remove(bullet)
-        # Check for any bullets that have hit aliens.
-        # If so, get rid of the bullet amd the alien.
+        self._check_bullet_alien_collisions()
+        
+    def _check_bullet_alien_collisions(self):
+        """Check for any bullets that have hit aliens.
+        If so, get rid of the bullet and the alien."""
         collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True)
         if not self.aliens:
-            # Destroy existing bullets and create new fleet
+            """Destroy existing bullets and create new fleet"""
             self.bullets.empty()
             self._new_fleet()
+            self.settings.increase_speed()
 
     def _new_fleet(self):
         """Create alien fleet"""
@@ -196,6 +207,9 @@ class GameCharacter:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
+        # Draw the score information.
+        self.sb.show_score()
+
         # Draw play button if game is inactive state.
         if self.stats.game_active == False:
             self.play_button.draw_button()

@@ -12,3 +12,4 @@ class GameStats:
     def reset_stats(self):
         """Initialize statistics that can change during the game"""
         self.goku_left = self.settings.goku_lives
+        self.score = 0
