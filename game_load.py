@@ -71,6 +71,7 @@ class GameCharacter:
             self.stats.reset_stats()
             self.stats.game_active = True
             self.sb.prep_score()
+            self.sb.prep_level()
             # Get rid of any remaining aliens and bullets.
             self.aliens.empty()
             self.bullets.empty()
@@ -94,6 +95,10 @@ class GameCharacter:
                 new_bullet = Bullet(self)
                 self.bullets.add(new_bullet)
         elif event.key == pygame.K_q:
+            # Write high score into a file, exit system.
+            import json
+            with open("high_scores.json",'w') as f:
+                json.dump(self.stats.high_score, f)
             sys.exit()
             
     def _check_keyrelease(self,event):
@@ -131,6 +136,9 @@ class GameCharacter:
             self.bullets.empty()
             self._new_fleet()
             self.settings.increase_speed()
+            # Increae level.
+            self.stats.level += 1
+            self.sb.prep_level()
 
     def _new_fleet(self):
         """Create alien fleet"""
