@@ -37,6 +37,13 @@ class GameCharacter:
         # Make a Play button.
         self.play_button = Button(self, "PLAY")
 
+        # Set up the sound and music.
+        pygame.mixer.init()
+        self.bulletSound = pygame.mixer.Sound('game_pics/hit_wave.ogg')
+        pygame.mixer.music.load('game_pics/music.mp3')
+        pygame.mixer.music.play(-1, 0.0)
+        self.music_playing = True
+
     def run_the_game(self):
         """a while loop for the game"""
         while True:
@@ -110,6 +117,12 @@ class GameCharacter:
             self.goku.moving_up = False
         elif event.key == pygame.K_DOWN:
             self.goku.moving_down = False
+        elif event.key == pygame.K_m:
+            if self.music_playing:
+                pygame.mixer.music.stop()
+            else:
+                pygame.mixer.music.play(-1, 0.0)
+            self.music_playing = not self.music_playing
 
     def _update_bullets(self):
         """Update positions of bullets and rid old bullets"""
@@ -128,6 +141,7 @@ class GameCharacter:
         if collisions:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
+                self.bulletSound.play()
             self.sb.prep_score()
             self.sb.check_high_score()
 
