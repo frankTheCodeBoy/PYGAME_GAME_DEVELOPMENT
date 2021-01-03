@@ -43,6 +43,7 @@ class GameCharacter:
         raw_array = bulletSound.get_raw()
         raw_array = raw_array[100000:120000]
         self.putBulletSound = pygame.mixer.Sound(buffer=raw_array)
+        self.crashSound = pygame.mixer.Sound('game_pics/crash-tone.mp3')
         pygame.mixer.music.load('game_pics/Scorch_Trials.mp3')
         pygame.mixer.music.play(-1, 0.0)
         self.music_playing = True
@@ -206,6 +207,7 @@ class GameCharacter:
         self.aliens.update()
         # Look for collisions of alien and goku"""
         if pygame.sprite.spritecollideany(self.goku,self.aliens):
+            self.crashSound.play()
             self._goku_hit()
         # Look for aliens reaching right side of screen.
         self._check_aliens_right()
@@ -230,6 +232,7 @@ class GameCharacter:
         screen_rect = self.screen.get_rect()
         for alien in self.aliens.sprites():
             if alien.rect.right >= screen_rect.right:
+                self.crashSound.play()
                 self._goku_hit()
                 break
 
