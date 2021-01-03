@@ -6,22 +6,22 @@ class Settings:
         # Screen settings
         self.screen_width = 1200
         self.screen_height = 800
-        self.bg_color = (139,0,0)
+        self.bg_color = (0,0,205)
 
         # Goku settings
         self.goku_lives = 3
         
         # Bullet settings
         self.bullet_width = 7
-        self.bullet_height = 19
-        self.bullet_color = (0,0,250)
+        self.bullet_height = 20
+        self.bullet_color = (139,0,0)
         self.bullets_allowed = 4
 
         # Alien settings
         self.fleet_cruise_speed = 10
 
         # How quickly the game speeds up
-        self.speedup_scale = 1.1
+        self.speedup_scale = 1.2
 
         # How quickly the alien point values increase
         self.score_scale = 1.5
@@ -30,7 +30,7 @@ class Settings:
 
     def initialize_dynamic_settings(self):
         """Initialize settings that change throughout the game"""
-        self.alien_speed = 1.0
+        self.alien_speed = 1.5
         self.bullet_speed = 3.0
         self.goku_speed = 2.0 
         

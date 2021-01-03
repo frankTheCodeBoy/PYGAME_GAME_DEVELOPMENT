@@ -7,23 +7,20 @@ class Bullet(Sprite):
         """Create bullets at character location"""
         super().__init__()
         self.screen = first_play.screen
-        # bullet settings
-        self.bullet_height = 20
-        self.bullet_width = 6
-        self.bullet_color = (0,0,250)
-        self.bullet_speed = 1.5
-        
+        self.settings = first_play.settings
+        self.color = self.settings.bullet_color
         # Create bullet at 0,0 then correct position
-        self.rect = pygame.Rect(0,0,self.bullet_width,self.bullet_height)
+        self.rect = pygame.Rect(0,0,self.settings.bullet_width,
+            self.settings.bullet_height)
         self.rect.center = first_play.goku.rect.center
         # Store bullet speed as float value
         self.x = float(self.rect.x)
 
     def update(self):
         """Move the bullet horizontally across the screen"""
-        self.x -= self.bullet_speed
+        self.x -= self.settings.bullet_speed
         self.rect.x = self.x
 
     def draw_bullet(self):
         """Draw bullet on the screen"""
-        pygame.draw.rect(self.screen,self.bullet_color,self.rect)
+        pygame.draw.rect(self.screen,self.color,self.rect)
