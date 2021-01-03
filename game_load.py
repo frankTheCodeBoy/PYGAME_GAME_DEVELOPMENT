@@ -45,8 +45,8 @@ class GameCharacter:
         self.putBulletSound = pygame.mixer.Sound(buffer=raw_array)
         self.crashSound = pygame.mixer.Sound('game_pics/crash-tone.mp3')
         pygame.mixer.music.load('game_pics/Scorch_Trials.mp3')
-        pygame.mixer.music.play(-1, 0.0)
-        self.music_playing = True
+        # Set a music playing flag
+        self.music_playing = False
 
     def run_the_game(self):
         """a while loop for the game"""
@@ -91,6 +91,9 @@ class GameCharacter:
             self.goku.restore_goku()
             # Hide the mouse cursor.
             pygame.mouse.set_visible(False)
+            # Set music flag to true, let music play
+            self.music_playing = True
+            pygame.mixer.music.play(-1, 0.0)
 
     def _check_keypresses(self,event):
         if event.key == pygame.K_RIGHT:
@@ -226,6 +229,8 @@ class GameCharacter:
         else:
             self.stats.game_active = False
             pygame.mouse.set_visible(True)
+            self.music_playing = False
+            pygame.mixer.music.stop()
 
     def _check_aliens_right(self):
         """Check whether any aliens have reached the right side of the screen"""
