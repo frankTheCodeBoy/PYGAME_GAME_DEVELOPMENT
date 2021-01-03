@@ -39,8 +39,11 @@ class GameCharacter:
 
         # Set up the sound and music.
         pygame.mixer.init()
-        self.bulletSound = pygame.mixer.Sound('game_pics/hit_wave.ogg')
-        pygame.mixer.music.load('game_pics/music.mp3')
+        bulletSound = pygame.mixer.Sound('game_pics/Sonar-sound.mp3')
+        raw_array = bulletSound.get_raw()
+        raw_array = raw_array[100000:120000]
+        self.putBulletSound = pygame.mixer.Sound(buffer=raw_array)
+        pygame.mixer.music.load('game_pics/Scorch_Trials.mp3')
         pygame.mixer.music.play(-1, 0.0)
         self.music_playing = True
 
@@ -141,7 +144,7 @@ class GameCharacter:
         if collisions:
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
-                self.bulletSound.play()
+                self.putBulletSound.play()
             self.sb.prep_score()
             self.sb.check_high_score()
 
