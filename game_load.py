@@ -132,7 +132,7 @@ class GameCharacter:
             if self.music_playing:
                 pygame.mixer.music.stop()
             else:
-                pygame.mixer.music.play(-1, 2.5)
+                pygame.mixer.music.play(-1, 0.0)
             self.music_playing = not self.music_playing
 
     def _update_bullets(self):
