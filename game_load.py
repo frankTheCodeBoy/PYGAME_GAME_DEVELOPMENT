@@ -39,12 +39,15 @@ class GameCharacter:
 
         # Set up the sound and music.
         pygame.mixer.init()
-        bulletSound = pygame.mixer.Sound('game_pics/Sonar-sound.mp3')
+        bulletSound = pygame.mixer.Sound('game_pics/shoot_ship.mp3')
         raw_array = bulletSound.get_raw()
         raw_array = raw_array[100000:120000]
         self.putBulletSound = pygame.mixer.Sound(buffer=raw_array)
+        # Load crash sounds, game over sounds; and store in attributes.
         self.crashSound = pygame.mixer.Sound('game_pics/crash-tone.mp3')
-        pygame.mixer.music.load('game_pics/Scorch_Trials.mp3')
+        self.gameOverSound = pygame.mixer.Sound('game_pics/music.mp3')
+        # Load background music. 
+        pygame.mixer.music.load('game_pics/my_music.mp3')
         # Set a music playing flag
         self.music_playing = False
 
@@ -92,6 +95,7 @@ class GameCharacter:
             # Hide the mouse cursor.
             pygame.mouse.set_visible(False)
             # Set music flag to true, let music play
+            self.gameOverSound.stop()
             self.music_playing = True
             pygame.mixer.music.play(-1, 0.0)
 
@@ -124,11 +128,11 @@ class GameCharacter:
             self.goku.moving_up = False
         elif event.key == pygame.K_DOWN:
             self.goku.moving_down = False
-        elif event.key == pygame.K_m:
+        elif event.key == pygame.K_m and self.stats.game_active:
             if self.music_playing:
                 pygame.mixer.music.stop()
             else:
-                pygame.mixer.music.play(-1, 0.0)
+                pygame.mixer.music.play(-1, 2.5)
             self.music_playing = not self.music_playing
 
     def _update_bullets(self):
@@ -224,6 +228,7 @@ class GameCharacter:
             # create new fleet and restore goku
             self._new_fleet()
             self.goku.restore_goku()
+            self.sb.prep_lives_depleted()
             # Pause
             sleep(0.5)
         else:
@@ -231,6 +236,8 @@ class GameCharacter:
             pygame.mouse.set_visible(True)
             self.music_playing = False
             pygame.mixer.music.stop()
+            sleep(1.5)
+            self.gameOverSound.play()
 
     def _check_aliens_right(self):
         """Check whether any aliens have reached the right side of the screen"""
@@ -254,7 +261,7 @@ class GameCharacter:
         # Draw play button if game is inactive state.
         if self.stats.game_active == False:
             self.play_button.draw_button()
-
+           
         pygame.display.flip()
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 import pygame.font
 
 class Scoreboard:
-    """A class to report scoring information"""
+    """A class to report scoring information and display lives"""
 
     def __init__(self, first_play):
         """Initialize scorekeeping attributes"""
@@ -18,7 +18,8 @@ class Scoreboard:
         self.prep_score()
         self.prep_high_score()
         self.prep_level()
-
+        self.prep_lives_depleted()
+        
     def prep_score(self):
         """Turn the score into a rendered image."""
         rounded_score = round(self.stats.score, -1)
@@ -34,7 +35,7 @@ class Scoreboard:
     def prep_high_score(self):
         """Turn the high score into a rendered image."""
         high_score = round(self.stats.high_score, -1)
-        high_score_str = "High-Score: {:,}".format(high_score)
+        high_score_str = "# HIGH-SCORE: {:,}".format(high_score)
         self.high_score_image = self.font.render(high_score_str, 
             True, self.text_color, self.settings.bg_color)
 
@@ -46,7 +47,7 @@ class Scoreboard:
     def prep_level(self):
         """Turn the level into a rendered image."""
         level_str = str(self.stats.level)
-        level_str_display = "Level: {}".format(level_str)
+        level_str_display = "Level -{}".format(level_str)
         self.level_image = self.font.render(level_str_display, True, 
             self.text_color, self.settings.bg_color)
         # Position the level below the score.
@@ -55,14 +56,39 @@ class Scoreboard:
         self.level_rect.top = self.score_rect.bottom + 10
 
     def show_score(self):
-        """Draw scores and level to the screen."""
+        """Draw scores, level and lives to the screen."""
         self.screen.blit(self.score_image, self.score_rect)
         self.screen.blit(self.high_score_image, self.high_score_rect)
         self.screen.blit(self.level_image, self.level_rect)
+        # show lives left
+        self.screen.blit(self.text, self.text_rect)
 
     def check_high_score(self):
         """Check to see if there's a new high score"""
         if self.stats.score > self.stats.high_score:
             self.stats.high_score = self.stats.score
             self.prep_high_score()
+
+
+    def prep_lives_depleted(self):
+        """Display lives depleted on screen"""
+        text_str = str(self.stats.goku_left)
+        text_str_display = "Lives: {}".format(text_str)    
+        self.text = self.font.render(text_str_display,
+            True, self.text_color, self.settings.bg_color)
+        self.text_rect = self.text.get_rect()
+        self.text_rect.left = self.screen_rect.left + 15
+        self.text_rect.top = 20
+    
+    
+
+
+
+
+
+
+
+
+
+
 
