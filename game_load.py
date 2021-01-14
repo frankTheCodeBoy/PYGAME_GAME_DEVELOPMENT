@@ -7,6 +7,7 @@ from settings import Settings
 from game_stats import GameStats
 from scoreboard import Scoreboard
 from button import Button
+from other_buttons import HelpButton
 from goku import Goku
 from game_bullets import Bullet
 from aliens import Alien
@@ -34,9 +35,9 @@ class GameCharacter:
 
         self.aliens = pygame.sprite.Group()
         self._new_fleet()
-        # Make a Play button.
+        # Make a Play button, Help button.
         self.play_button = Button(self, "PLAY")
-
+        self.help_button = HelpButton(self, "HELP!")
         # Set up the sound and music.
         pygame.mixer.init()
         bulletSound = pygame.mixer.Sound('game_pics/shoot_ship.mp3')
@@ -73,6 +74,7 @@ class GameCharacter:
                 self._check_keyrelease(event)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
+                self._check_help_button(mouse_pos)
                 self._check_play_button(mouse_pos)
 
     def _check_play_button(self, mouse_pos):
@@ -98,6 +100,12 @@ class GameCharacter:
             self.gameOverSound.stop()
             self.music_playing = True
             pygame.mixer.music.play(-1, 0.0)
+
+    def _check_help_button(self, mouse_pos):
+        """Check if help button is clicked"""
+        button_clicked = self.help_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.stats.game_active:
+            self.help_button.show_guide()
 
     def _check_keypresses(self,event):
         if event.key == pygame.K_RIGHT:
@@ -261,6 +269,7 @@ class GameCharacter:
         # Draw play button if game is inactive state.
         if self.stats.game_active == False:
             self.play_button.draw_button()
+            self.help_button.draw_help()
            
         pygame.display.flip()
 
